@@ -1,10 +1,11 @@
-# 🍺 ZZAN (짠!) - 술집 예약 시스템
+# 🍺 ZZAN (짠!) - 술집 예약 시스템 (Backend)
 
 > 대학가 술집 실시간 예약 플랫폼 — 빈자리 확인부터 예약까지 한 번에
 
-| **Frontend** | **Backend** |
-|:---:|:---:|
-| [zzan-frontend]() | [zzan-backend](https://github.com/yxzkng/zzan.git) |
+| **Frontend** | **Backend** | **기획&디자인** |
+| :---: | :---: | :---: |
+| @busicoder | @yxzkng, @minjaejyo | 정우정 |
+| [zzan-frontend](https://github.com/busicoder/bokhackaton_frontend) | [zzan-backend](https://github.com/yxzkng/zzan.git) | |
 
 <br>
 
@@ -185,11 +186,6 @@ src/main/java/likelion/demo/
 | 술이야기 | 정문 도보 5분 | 18:00 ~ 24:00 | 20석 | 일요일 |
 | 달빛포차 | 후문 도보 1분 | 19:00 ~ 24:00 | 6석 | 월, 화 |
 | 한잔의 여유 | 정문 도보 10분 | 16:00 ~ 24:00 | 15석 | - |
-
-
-<br>
-
-## 👥 Contributors
 
 
 <br>
