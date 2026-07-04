@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import likelion.demo.global.common.ApiResponse;
 import likelion.demo.global.exception.UnauthorizedException;
 import likelion.demo.reservation.dto.MyReservationListResponse;
+import likelion.demo.reservation.dto.ReservationCancelResponse;
 import likelion.demo.reservation.dto.ReservationRequest;
 import likelion.demo.reservation.dto.ReservationResponse;
 import likelion.demo.reservation.service.ReservationService;
@@ -44,5 +45,19 @@ public class ReservationController {
 
         MyReservationListResponse response = reservationService.getMyReservations(memberId);
         return ResponseEntity.ok(ApiResponse.success(200, "예약 목록 조회 성공", response));
+    }
+
+    @PatchMapping("/{reservationId}/cancel")
+    public ResponseEntity<ApiResponse<ReservationCancelResponse>> cancelReservation(
+            @PathVariable Long reservationId,
+            HttpSession session) {
+
+        Long memberId = (Long) session.getAttribute("memberId");
+        if (memberId == null) {
+            throw new UnauthorizedException("로그인이 필요합니다.");
+        }
+
+        ReservationCancelResponse response = reservationService.cancelReservation(memberId, reservationId);
+        return ResponseEntity.ok(ApiResponse.success(200, "예약이 취소되었습니다.", response));
     }
 }

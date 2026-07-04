@@ -1,10 +1,12 @@
 package likelion.demo.reservation.service;
 
 import likelion.demo.global.exception.ConflictException;
+import likelion.demo.global.exception.ForbiddenException;
 import likelion.demo.global.exception.NotFoundException;
 import likelion.demo.member.entity.Member;
 import likelion.demo.member.repository.MemberRepository;
 import likelion.demo.reservation.dto.MyReservationListResponse;
+import likelion.demo.reservation.dto.ReservationCancelResponse;
 import likelion.demo.reservation.dto.ReservationRequest;
 import likelion.demo.reservation.dto.ReservationResponse;
 import likelion.demo.reservation.entity.Reservation;
@@ -93,6 +95,23 @@ public class ReservationService {
         return MyReservationListResponse.builder()
                 .totalReservations(responses.size())
                 .reservations(responses)
+                .build();
+    }
+
+    @Transactional
+    public ReservationCancelResponse cancelReservation(Long memberId, Long reservationId) {
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new NotFoundException("해당 예약을 찾을 수 없습니다."));
+
+        if (!reservation.getMember().getId().equals(memberId)) {
+            throw new ForbiddenException("본인의 예약만 취소할 수 있습니다.");
+        }
+
+        reservation.cancel();
+
+        return ReservationCancelResponse.builder()
+                .reservationId(reservation.getId())
+                .status(reservation.getStatus().name())
                 .build();
     }
 
