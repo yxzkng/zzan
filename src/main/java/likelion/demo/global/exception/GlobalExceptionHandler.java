@@ -8,22 +8,46 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    // TODO: @RestControllerAdvice 구현
-    @ExceptionHandler(DuplicateLoginIdException.class)
-    public ResponseEntity<ApiResponse<Void>> handleDuplicateLoginIdException(DuplicateLoginIdException e) {
 
-        return buildErrorResponse(HttpStatus.CONFLICT, e.getMessage());
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ApiResponse<Void>> handleUnauthorized(UnauthorizedException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(ApiResponse.error(401, e.getMessage()));
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleNotFound(NotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.error(404, e.getMessage()));
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ApiResponse<Void>> handleForbidden(ForbiddenException e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ApiResponse.error(403, e.getMessage()));
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<ApiResponse<Void>> handleConflict(ConflictException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ApiResponse.error(409, e.getMessage()));
+    }
+
+    @ExceptionHandler(DuplicateLoginIdException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDuplicateLoginId(DuplicateLoginIdException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ApiResponse.error(409, e.getMessage()));
     }
 
     @ExceptionHandler(LoginFailedException.class)
-    public ResponseEntity<ApiResponse<Void>> handleLoginFailedException(LoginFailedException e) {
-            return buildErrorResponse(HttpStatus.UNAUTHORIZED, e.getMessage());
+    public ResponseEntity<ApiResponse<Void>> handleLoginFailed(LoginFailedException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(ApiResponse.error(401, e.getMessage()));
     }
 
-    private ResponseEntity<ApiResponse<Void>> buildErrorResponse(HttpStatus status, String message){
-        return ResponseEntity
-                .status(status)
-                .body(ApiResponse.error(status.value(), message));
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiResponse<Void>> handleBadRequest(IllegalArgumentException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.error(400, e.getMessage()));
     }
-
 }
