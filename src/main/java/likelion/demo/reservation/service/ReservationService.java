@@ -55,7 +55,7 @@ public class ReservationService {
         int openMin = toMinutes(store.getOpenTime());
         int closeMin = toMinutes(store.getCloseTime());
         if (startMin < openMin || endMin > closeMin) {
-            throw new IllegalArgumentException("영업 시간 내에만 예약할 ��� 있습니다.");
+            throw new IllegalArgumentException("영업 시간 내에만 예약할 수 있습니다.");
         }
 
         // 휴무일 확인

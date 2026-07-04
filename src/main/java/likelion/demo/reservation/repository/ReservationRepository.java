@@ -24,5 +24,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     List<Reservation> findActiveByStoreAndDate(@Param("storeId") Long storeId,
                                                @Param("date") LocalDate date);
 
-    List<Reservation> findByMember(Member member);
+    @Query("SELECT r FROM Reservation r JOIN FETCH r.store WHERE r.member = :member")
+    List<Reservation> findByMember(@Param("member") Member member);
 }
