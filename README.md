@@ -71,7 +71,7 @@ src/main/java/likelion/demo/
 
 | 회원가입 화면 | 로그인 화면 |
 | :---: | :---: |
-| <img width="400" alt="image" src="https://github.com/user-attachments/assets/f9ae1c99-2469-4d85-b07f-6938cddd8dc9" /> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/52e3e1b6-24c2-4f18-aa6f-ecd1ca456628" /> |
+| <img width="200" alt="image" src="https://github.com/user-attachments/assets/f9ae1c99-2469-4d85-b07f-6938cddd8dc9" /> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/52e3e1b6-24c2-4f18-aa6f-ecd1ca456628" /> |
 
 <br>
 
