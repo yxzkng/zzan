@@ -1,6 +1,7 @@
 package likelion.demo.store.service;
 
 import likelion.demo.global.exception.NotFoundException;
+import likelion.demo.reservation.entity.Reservation;
 import likelion.demo.reservation.repository.ReservationRepository;
 import likelion.demo.store.dto.StoreListResponse;
 import likelion.demo.store.dto.TimeslotResponse;
@@ -64,8 +65,8 @@ public class StoreService {
                         .id(store.getId())
                         .name(store.getName())
                         .address(store.getAddress())
-                        .openTime(store.getOpenTime())
-                        .closeTime(store.getCloseTime())
+                        .openTime(formatTime(store.getOpenTime()))
+                        .closeTime(formatTime(store.getCloseTime()))
                         .remainingSeatsMax(remainingSeatsMax)
                         .build());
             }
@@ -109,16 +110,19 @@ public class StoreService {
     }
 
     private Map<Long, Map<LocalTime, Long>> buildReservedMap(LocalDate date) {
-        List<Object[]> results = reservationRepository.findReservedHeadcountByDate(date);
+        List<Reservation> reservations = reservationRepository.findActiveByDate(date);
         Map<Long, Map<LocalTime, Long>> map = new HashMap<>();
 
-        for (Object[] row : results) {
-            Long storeId = (Long) row[0];
-            LocalTime startTime = (LocalTime) row[1];
-            Long totalHeadcount = (Long) row[2];
+        for (Reservation r : reservations) {
+            Long storeId = r.getStore().getId();
+            Map<LocalTime, Long> slotMap = map.computeIfAbsent(storeId, k -> new HashMap<>());
 
-            map.computeIfAbsent(storeId, k -> new HashMap<>())
-                    .put(startTime, totalHeadcount);
+            int startMin = toMinutes(r.getStartTime());
+            int endMin = toMinutes(r.getEndTime());
+            for (int m = startMin; m < endMin; m += 60) {
+                LocalTime slotTime = LocalTime.of(m / 60, m % 60);
+                slotMap.merge(slotTime, (long) r.getHeadcount(), Long::sum);
+            }
         }
 
         return map;
@@ -126,20 +130,25 @@ public class StoreService {
 
     private List<LocalTime> generateTimeslots(LocalTime openTime, LocalTime closeTime) {
         List<LocalTime> slots = new ArrayList<>();
-        LocalTime current = openTime;
+        int openMin = toMinutes(openTime);
+        int closeMin = toMinutes(closeTime);
 
-        for (int i = 0; i < 24; i++) {
-            if (!current.isBefore(closeTime)) {
-                break;
-            }
-            slots.add(current);
-            current = current.plusHours(1);
-            // 자정(00:00)을 넘어가면 종료
-            if (current.equals(LocalTime.MIDNIGHT) || current.isBefore(openTime)) {
-                break;
-            }
+        for (int m = openMin; m < closeMin; m += 60) {
+            slots.add(LocalTime.of(m / 60, m % 60));
         }
 
         return slots;
+    }
+
+    private int toMinutes(LocalTime time) {
+        int m = time.getHour() * 60 + time.getMinute();
+        return m == 0 ? 1440 : m;
+    }
+
+    private String formatTime(LocalTime time) {
+        if (time.equals(LocalTime.MIDNIGHT)) {
+            return "24:00";
+        }
+        return String.format("%02d:%02d", time.getHour(), time.getMinute());
     }
 }
