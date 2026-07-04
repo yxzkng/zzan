@@ -9,10 +9,10 @@ import lombok.Getter;
 @JsonInclude(JsonInclude.Include.ALWAYS)
 public class ApiResponse<T> {
 
-    private boolean success;
-    private int code;
-    private String message;
-    private T data;
+    private final boolean success;
+    private final int code;
+    private final String message;
+    private final T data;
 
     public static <T> ApiResponse<T> success(int code, String message, T data) {
         return new ApiResponse<>(true, code, message, data);
@@ -24,5 +24,9 @@ public class ApiResponse<T> {
 
     public static ApiResponse<Void> error(int code, String message) {
         return new ApiResponse<>(false, code, message, null);
+    }
+
+    public static <T> ApiResponse<T> error(int code, String message, T data) {
+        return new ApiResponse<>(false, code, message, data);
     }
 }
