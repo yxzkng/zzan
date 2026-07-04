@@ -25,7 +25,7 @@ public class StoreController {
             @RequestParam int headcount,
             HttpSession session) {
 
-        if (session.getAttribute("memberId") == null) {
+        if (session.getAttribute("LOGIN_MEMBER_ID") == null) {
             throw new UnauthorizedException("로그인이 필요합니다.");
         }
 
@@ -40,7 +40,7 @@ public class StoreController {
             @RequestParam int headcount,
             HttpSession session) {
 
-        if (session.getAttribute("memberId") == null) {
+        if (session.getAttribute("LOGIN_MEMBER_ID") == null) {
             throw new UnauthorizedException("로그인이 필요합니다.");
         }
 

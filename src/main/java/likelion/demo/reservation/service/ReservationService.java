@@ -34,8 +34,8 @@ public class ReservationService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public ReservationResponse createReservation(Long memberId, ReservationRequest request) {
-        Member member = memberRepository.findById(memberId)
+    public ReservationResponse createReservation(String loginId, ReservationRequest request) {
+        Member member = memberRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new NotFoundException("회원을 찾을 수 없습니다."));
 
         Store store = storeRepository.findById(request.getStoreId())
@@ -83,8 +83,8 @@ public class ReservationService {
         return ReservationResponse.from(reservation);
     }
 
-    public MyReservationListResponse getMyReservations(Long memberId) {
-        Member member = memberRepository.findById(memberId)
+    public MyReservationListResponse getMyReservations(String loginId) {
+        Member member = memberRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new NotFoundException("회원을 찾을 수 없습니다."));
 
         List<Reservation> reservations = reservationRepository.findByMember(member);
@@ -99,11 +99,14 @@ public class ReservationService {
     }
 
     @Transactional
-    public ReservationCancelResponse cancelReservation(Long memberId, Long reservationId) {
+    public ReservationCancelResponse cancelReservation(String loginId, Long reservationId) {
+        Member member = memberRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new NotFoundException("회원을 찾을 수 없습니다."));
+
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new NotFoundException("해당 예약을 찾을 수 없습니다."));
 
-        if (!reservation.getMember().getId().equals(memberId)) {
+        if (!reservation.getMember().getId().equals(member.getId())) {
             throw new ForbiddenException("본인의 예약만 취소할 수 있습니다.");
         }
 

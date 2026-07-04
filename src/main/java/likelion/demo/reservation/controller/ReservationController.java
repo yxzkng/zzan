@@ -25,12 +25,12 @@ public class ReservationController {
             @RequestBody ReservationRequest request,
             HttpSession session) {
 
-        Long memberId = (Long) session.getAttribute("memberId");
-        if (memberId == null) {
+        String loginId = (String) session.getAttribute("LOGIN_MEMBER_ID");
+        if (loginId == null) {
             throw new UnauthorizedException("로그인이 필요합니다.");
         }
 
-        ReservationResponse response = reservationService.createReservation(memberId, request);
+        ReservationResponse response = reservationService.createReservation(loginId, request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success(201, "예약 신청 성공", response));
     }
@@ -38,12 +38,12 @@ public class ReservationController {
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<MyReservationListResponse>> getMyReservations(HttpSession session) {
 
-        Long memberId = (Long) session.getAttribute("memberId");
-        if (memberId == null) {
+        String loginId = (String) session.getAttribute("LOGIN_MEMBER_ID");
+        if (loginId == null) {
             throw new UnauthorizedException("로그인이 필요합니다.");
         }
 
-        MyReservationListResponse response = reservationService.getMyReservations(memberId);
+        MyReservationListResponse response = reservationService.getMyReservations(loginId);
         return ResponseEntity.ok(ApiResponse.success(200, "예약 목록 조회 성공", response));
     }
 
@@ -52,12 +52,12 @@ public class ReservationController {
             @PathVariable Long reservationId,
             HttpSession session) {
 
-        Long memberId = (Long) session.getAttribute("memberId");
-        if (memberId == null) {
+        String loginId = (String) session.getAttribute("LOGIN_MEMBER_ID");
+        if (loginId == null) {
             throw new UnauthorizedException("로그인이 필요합니다.");
         }
 
-        ReservationCancelResponse response = reservationService.cancelReservation(memberId, reservationId);
+        ReservationCancelResponse response = reservationService.cancelReservation(loginId, reservationId);
         return ResponseEntity.ok(ApiResponse.success(200, "예약이 취소되었습니다.", response));
     }
 }
