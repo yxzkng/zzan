@@ -67,6 +67,25 @@ src/main/java/likelion/demo/
 ```
 
 <br>
+### 📱 서비스 화면
+
+| 회원가입 화면 | 로그인 화면 |
+| :---: | :---: |
+| <img width="400" alt="image" src="https://github.com/user-attachments/assets/f9ae1c99-2469-4d85-b07f-6938cddd8dc9" /> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/52e3e1b6-24c2-4f18-aa6f-ecd1ca456628" /> |
+
+<br>
+
+| 필터링 검색 | 예약 |
+| :---: | :---: |
+| <img width="400" alt="image" src="https://github.com/user-attachments/assets/994123b2-6e44-4576-986c-2a4795e36f07" /> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/47390f21-010e-406e-bb47-d4819371df65" /> |
+
+<br>
+
+| 예약 관리 및 예약 취소 |
+| :---: |
+| <img width="800" alt="image" src="https://github.com/user-attachments/assets/658d3fea-0c68-426c-a8d5-3942e172b557" /> |
+
+
 
 ## 📊 ERD
 
